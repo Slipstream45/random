@@ -1,3 +1,7 @@
+;A shellcode I made myself to spawn root shell in a executable stack buffer overflow problem.
+;The raw shellcode as an asm executable file works fine in any system if run separately
+
+
 #####################################
 #   SHELLCODE v 3.0                 #
 #        BY                         #
